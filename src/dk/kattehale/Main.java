@@ -1,6 +1,7 @@
 package dk.kattehale;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class Main {
@@ -11,30 +12,31 @@ public class Main {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("AlgoVisualizer");
+        frame.setLayout(new BorderLayout());
 
         JPanel[] panelArray = new JPanel[dataCount];
         JPanel container = new JPanel();
-        container.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-
-        /*c.insets = new Insets(0,1,0,1);
-        c.anchor = GridBagConstraints.SOUTH;*/
-
+        container.setLayout(new BoxLayout(container, BoxLayout.LINE_AXIS));
+        container.setBackground(Color.blue);
+        container.setPreferredSize(new Dimension(width,height));
         for (int i = 0; i < dataCount; i++) {
             panelArray[i] = new JPanel();
-            panelArray[i].setPreferredSize(new Dimension(100,100));
-            panelArray[i].setSize(120,400);
-            panelArray[i].setLocation(100,0);
-            c.gridx = i*2;
-            c.gridy = 0;
+            panelArray[i].setAlignmentY(JComponent.BOTTOM_ALIGNMENT);
+            panelArray[i].setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
+            Dimension d = new Dimension(width/dataCount,300);
+            panelArray[i].setPreferredSize(d);
+            panelArray[i].setMaximumSize(d);
+
+//            BorderFactory.createEmptyBorder(0,10,0,0);
             javax.swing.border.Border border = BorderFactory.createLineBorder(Color.black, 1);
             panelArray[i].setBorder(border);
             panelArray[i].setBackground(Color.gray);
             panelArray[i].setVisible(true);
-            container.add(panelArray[i], c);
+            container.add(panelArray[i]);
         }
-        frame.getContentPane().add(container);
+
+        frame.add(container, BorderLayout.SOUTH);
 
 //        JPanel panel = new JPanel();
 //        panel.setBackground(Color.black);
@@ -42,7 +44,6 @@ public class Main {
 //        panel.setSize(200,400);
 //        frame.add(container);
 
-        frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width,height);
         frame.setLocationRelativeTo(null);
