@@ -37,7 +37,7 @@ public class Main {
 
         // Draws bars to the JFrame.
         frame.add(bars);
-        frame.setBackground(Color.white);
+        frame.getContentPane().setBackground(Color.green);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

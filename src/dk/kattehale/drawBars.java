@@ -33,7 +33,7 @@ public class drawBars extends JPanel {
 
             int barHeight = (height/100)*array[i];
 
-            g.setColor(Color.DARK_GRAY);
+            g.setColor(new Color(109, 37, 37));
             g.fillRect(i*barWidth,height, barWidth, barHeight-height);
         }
 
