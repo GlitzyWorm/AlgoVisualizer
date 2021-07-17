@@ -12,7 +12,9 @@ public class drawBars extends JPanel {
     int barWidth = width/dataCount;
     int[] array = Main.getArray();
 
-
+    public Dimension getPreferredSize() {
+        return new Dimension(width,height);
+    }
 
     public drawBars() {
         setBorder(BorderFactory.createLineBorder(Color.black, 1));
@@ -35,5 +37,9 @@ public class drawBars extends JPanel {
             g.fillRect(i*barWidth,height, barWidth, barHeight-height);
         }
 
+    }
+
+    public int getValue(int index) {
+        return array[index];
     }
 }

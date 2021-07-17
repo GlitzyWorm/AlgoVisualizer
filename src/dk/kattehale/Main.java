@@ -11,8 +11,8 @@ public class Main {
     public static int width = 800;
     public static int height = 600;
 
-    // The amount of data (and bars) to use
-    public static int dataCount = 10;
+    // The amount of data (and bars) to use (works best with a max of a 100 data points).
+    public static int dataCount = 50;
 
     public static int[] array = new int[dataCount];
 
@@ -25,22 +25,22 @@ public class Main {
         // Assigns random values from 1-75 to the array
         assignArray();
 
+        BubbleSort.runSort(array);
+
         // Updates array every second 10 times (used for testing)
-        updateArray();
+//        updateArray();
     }
 
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("AlgoVisualizer");
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.gray);
-
         // Draws bars to the JFrame.
         frame.add(bars);
+        frame.setBackground(Color.white);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(width,height);
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -56,6 +56,15 @@ public class Main {
     }
 
     public static void updateArray() {
+        bars.repaint();
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public static void testArray() {
         // Loops through 10 times and assigns new values to the array and repaints the bars every second.
         for (int i = 0; i < 10; i++) {
             assignArray();
