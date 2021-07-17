@@ -7,8 +7,11 @@ import java.util.Random;
 
 public class Main {
 
+    // Width and height of the screen
     public static int width = 800;
     public static int height = 600;
+
+    // The amount of data (and bars) to use
     public static int dataCount = 10;
 
     public static int[] array = new int[dataCount];
@@ -83,38 +86,4 @@ public class Main {
 }
 
 
-class drawBars extends JPanel {
 
-    int width = Main.getWidth();
-    int height = Main.getHeight();
-    int dataCount = Main.getDataCount();
-
-    int barWidth = width/dataCount;
-    int[] array = Main.getArray();
-
-
-
-    public drawBars() {
-        setBorder(BorderFactory.createLineBorder(Color.black, 1));
-    }
-
-    // Call this function to repaint the bars
-    public void repaintBars() {
-        repaint();
-    }
-
-    // This function paints the bars
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        for (int i = 0; i < dataCount; i++) {
-
-            int barHeight = (height/100)*array[i];
-
-            g.setColor(Color.DARK_GRAY);
-            g.fillRect(i*barWidth,height, barWidth, barHeight-height);
-
-        }
-
-    }
-}
