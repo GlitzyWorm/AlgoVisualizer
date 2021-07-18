@@ -1,10 +1,12 @@
-package dk.kattehale;
+package dk.kattehale.algorithms;
 
-public class BubbleSort {
+import dk.kattehale.Main;
+
+public class BubbleSort{
 
     public static int[] array = Main.getArray();
 
-    public static void runSort (int[] array) {
+    public static void runSort(int[] array) {
         int length = array.length;
 
         for (int i=0; i < length-1; i++) {

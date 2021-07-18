@@ -16,8 +16,9 @@ public class drawBars extends JPanel {
         return new Dimension(width,height);
     }
 
+    // Sets a border at the bottom of the bars
     public drawBars() {
-        setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.black));
     }
 
     // Call this function to repaint the bars
@@ -37,9 +38,5 @@ public class drawBars extends JPanel {
             g.fillRect(i*barWidth,height, barWidth, barHeight-height);
         }
 
-    }
-
-    public int getValue(int index) {
-        return array[index];
     }
 }
