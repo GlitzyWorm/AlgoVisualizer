@@ -2,7 +2,7 @@ package dk.kattehale.algorithms;
 
 import dk.kattehale.Main;
 
-public class BubbleSort{
+public class BubbleSort {
 
     public static int[] array = Main.getArray();
 

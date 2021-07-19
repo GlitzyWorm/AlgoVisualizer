@@ -1,9 +1,12 @@
 package dk.kattehale;
 
 import dk.kattehale.algorithms.BubbleSort;
+import dk.kattehale.algorithms.InsertionSort;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.Random;
 
@@ -17,19 +20,27 @@ public class Main {
     public static int dataCount = 50;
 
     public static int[] array = new int[dataCount];
-    public static String[] sortNames = {"BubbleSort"};
+    public static String[] sortNames = {"BubbleSort", "InsertionSort"};
 
     public static drawBars bars = new drawBars();
 
     static JComboBox sortList;
+    static JButton startSort;
+
+    public static String selectedSort;
+
+    // Name of cards for CardLayout
+    final static String SELECTSORT = "selectionCard";
+    final static String PERFORMSORT = "performSort";
+
 
     public static void main(String[] args) {
-        // Creates and shows GUI
-        createAndShowGUI();
 
         // Assigns random values from 1-75 to the array
         assignArray();
 
+        // Creates and shows GUI
+        createAndShowGUI();
 
         // Updates array every second 10 times (used for testing)
 //        updateArray();
@@ -40,27 +51,47 @@ public class Main {
         frame.setLayout(new BorderLayout());
 
         // Draws bars to the JFrame.
-        frame.add(bars, BorderLayout.CENTER);
+//        frame.add(bars, BorderLayout.CENTER);
 
-        // JPanel container to contain the following
-        JPanel menuContainer = new JPanel();
+        // JPanel Cards
+        // cardSelect: select sorting algorithm and start button
+        JPanel cardSelect = new JPanel();
 
-        // Adds a "Start" button to begin the sorting
-        JButton startSort = new JButton("Start");
-        startSort.addActionListener(e -> {
-            // Creates a new thread to prevent the GUI from freezing
-            new Thread(Main::doSort).start();
-        });
-
-        // Adds a dropdown menu to pick a sorting algorithm
         sortList = new JComboBox(sortNames);
         sortList.setSelectedIndex(0);
 
-        menuContainer.add(sortList);
-        menuContainer.add(startSort);
+        startSort = new JButton("Start");
 
-        frame.add(menuContainer, BorderLayout.SOUTH);
+        cardSelect.add(sortList);
+        cardSelect.add(startSort);
 
+        // cardPerform: visualize the chosen sorting algorithm
+        JPanel cardPerfom = new JPanel(new BorderLayout());
+        cardPerfom.add(bars, BorderLayout.CENTER);
+
+        // Card container
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardContainer = new JPanel(cardLayout);
+        cardContainer.add(cardSelect, SELECTSORT);
+        cardContainer.add(cardPerfom, PERFORMSORT);
+
+        // Starts new thread to handle button click. Otherwise the GUI freezes
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                startSort.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        cardLayout.show(cardContainer, PERFORMSORT);
+                        doSort();
+                    }
+                });
+            }
+        };
+        thread.start();
+
+        // Adds cardContainer and sets up the JFrame
+        frame.add(cardContainer, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -80,12 +111,31 @@ public class Main {
     // Checks which sorting algorithm is picked and executes
     public static void doSort() {
 
-        String selectedSort = Objects.requireNonNull(sortList.getSelectedItem()).toString();
-
-        switch (selectedSort) {
-            case "BubbleSort" -> BubbleSort.runSort(array);
-        }
-
+        // Starts a second thread to avoid freezing the GUI
+        Thread thread2 = new Thread() {
+            @Override
+            public void run() {
+                System.out.println("doSort is running");
+                switch (Objects.requireNonNull(sortList.getSelectedItem()).toString()) {
+                    case "BubbleSort":
+                        System.out.println("BubbleSort running");
+                        updateArray();
+                        bars.repaint();
+                        BubbleSort.runSort(array);
+                        break;
+                    case "InsertionSort":
+                        System.out.println("InsertionSort running");
+                        updateArray();
+                        bars.repaint();
+                        InsertionSort.runSort(array);
+                        break;
+                    default:
+                        InsertionSort.runSort(array);
+                        break;
+                };
+            }
+        };
+        thread2.start();
     }
 
     // Updates the visualization of the array
