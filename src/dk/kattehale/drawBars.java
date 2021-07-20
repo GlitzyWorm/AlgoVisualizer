@@ -9,16 +9,17 @@ public class drawBars extends JPanel {
     int height = Main.getHeight();
     int dataCount = Main.getDataCount();
 
-    int barWidth = width/dataCount;
     int[] array = Main.getArray();
+    int barWidth = width/dataCount;
 
     public Dimension getPreferredSize() {
         return new Dimension(width,height);
     }
 
-    // Sets a border at the bottom of the bars
+    // Can set a background color and a border around the frame
     public drawBars() {
-        setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.black));
+        setBorder(BorderFactory.createMatteBorder(0,0,0,0,Color.black));
+        setBackground(Color.white);
     }
 
     // Call this function to repaint the bars
@@ -32,11 +33,29 @@ public class drawBars extends JPanel {
 
         for (int i = 0; i < dataCount; i++) {
 
-            int barHeight = (height/100)*array[i];
+            int barHeight = (height/dataCount)*array[i];
 
-            g.setColor(new Color(109, 37, 37));
-            g.fillRect(i*barWidth,height, barWidth, barHeight-height);
+            g.setColor(new Color(153, 37, 54));
+            g.fillRect(i*barWidth,height-barHeight, barWidth, barHeight);
         }
 
+    }
+
+
+    /* Setters for array, barWidth, width and dataCount */
+    public void setDataCount(int dataCount) {
+        this.dataCount = dataCount;
+    }
+
+    public void setBarWidth(int barWidth) {
+        this.barWidth = barWidth;
+    }
+
+    public void setArray(int[] array) {
+        this.array = array;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }
