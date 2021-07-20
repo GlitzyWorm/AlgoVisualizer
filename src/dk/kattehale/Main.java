@@ -2,15 +2,11 @@ package dk.kattehale;
 
 import dk.kattehale.algorithms.BubbleSort;
 import dk.kattehale.algorithms.InsertionSort;
+import dk.kattehale.algorithms.QuickSort;
+import dk.kattehale.algorithms.SelectionSort;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
@@ -29,7 +25,7 @@ public class Main {
     public static drawBars bars = new drawBars();
 
     static JComboBox sortList;
-    public static String[] sortNames = {"BubbleSort", "InsertionSort"};
+    public static String[] sortNames = {"BubbleSort", "InsertionSort", "SelectionSort", "QuickSort"};
     static JButton startSort;
     static JSlider dataSlider;
 
@@ -43,7 +39,7 @@ public class Main {
         createAndShowGUI();
 
         // Updates array every second 10 times (used for testing)
-//        updateArray();
+        // updateArray();
     }
 
     public static void createAndShowGUI() {
@@ -221,6 +217,16 @@ public class Main {
                     shuffle();
                     InsertionSort.runSort(array);
                 }
+                case "SelectionSort" -> {
+                    System.out.println("SelectionSort running");
+                    shuffle();
+                    SelectionSort.runSort(array);
+                }
+                case "QuickSort" -> {
+                    System.out.println("QuickSort running");
+                    shuffle();
+                    QuickSort.runSort(array);
+                }
                 default -> {
                     shuffle();
                     InsertionSort.runSort(array);
@@ -263,7 +269,6 @@ public class Main {
 
 
     /* Getters for array, width, height and dataCount */
-
     public static int[] getArray() {
         return array;
     }
