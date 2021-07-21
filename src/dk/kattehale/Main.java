@@ -7,6 +7,8 @@ import dk.kattehale.algorithms.SelectionSort;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Random;
 
@@ -17,10 +19,9 @@ public class Main {
     public static int height = 700;
 
     // The amount of data (and bars) to use (works best with a max of a 100 data points).
-    public static int dataCount = 100;
+    public static int dataCount = 1000;
 
     public static int[] array;
-
 
     public static drawBars bars = new drawBars();
 
@@ -35,6 +36,7 @@ public class Main {
 
 
     public static void main(String[] args) {
+
         // Creates and shows GUI
         createAndShowGUI();
 
@@ -63,10 +65,11 @@ public class Main {
         JLabel sortLabel = new JLabel("Sorting algorithm");
         sortLabel.setFont(new Font("Dialog", Font.PLAIN, 18));
 
+        // TODO: Maybe change slider to JCombobox to give fixed values
         // Slider to choose the amount of dataCounts
-        dataSlider = new JSlider(JSlider.HORIZONTAL, 0,100,50);
-        dataSlider.setMajorTickSpacing(20);
-        dataSlider.setMinorTickSpacing(10);
+        dataSlider = new JSlider(JSlider.HORIZONTAL, 0,600,100);
+        dataSlider.setMajorTickSpacing(200);
+        dataSlider.setMinorTickSpacing(20);
         dataSlider.setPaintTicks(true);
         dataSlider.setPaintLabels(true);
         dataSlider.setSnapToTicks(true);
@@ -145,7 +148,16 @@ public class Main {
 
         // cardPerform: visualize the chosen sorting algorithm
         JPanel cardPerform = new JPanel(new BorderLayout());
+
+        // Add return button to previous card
+        JButton goBack = new JButton("Return");
+        goBack.setFont(new Font("Dialog", Font.PLAIN, 18));
+        goBack.setFocusPainted(false);
+
+
+
         cardPerform.add(bars, BorderLayout.CENTER);
+        cardPerform.add(goBack, BorderLayout.SOUTH);
 
         // Card container
         CardLayout cardLayout = new CardLayout();
@@ -154,6 +166,7 @@ public class Main {
         cardContainer.add(cardPerform, PERFORMSORT);
 
         // Starts new thread to handle button click. Otherwise the GUI freezes
+        // Goes to next card - do the sorting
         Thread thread = new Thread(() -> startSort.addActionListener(e -> {
             dataCount = dataSlider.getValue();
             assignArray(dataCount);
@@ -161,6 +174,9 @@ public class Main {
             doSort();
         }));
         thread.start();
+
+        // When sorting is finished goBack button becomes visible and returns to main screen when clicked
+        goBack.addActionListener(e -> cardLayout.show(cardContainer, SELECTSORT));
 
         // Adds cardContainer and sets up the JFrame
         frame.add(cardContainer, BorderLayout.CENTER);
@@ -173,6 +189,7 @@ public class Main {
     // Every value in the array gets a random number from 1 to 75.
     public static void assignArray(int dc) {
         array = new int[dc];
+        System.out.println("assignArray called");
 
         for (int i = 0; i < dc; i++) {
             array[dc-1-i] = dc-i;
@@ -229,7 +246,7 @@ public class Main {
                 }
                 default -> {
                     shuffle();
-                    InsertionSort.runSort(array);
+                    QuickSort.runSort(array);
                 }
             }
         });

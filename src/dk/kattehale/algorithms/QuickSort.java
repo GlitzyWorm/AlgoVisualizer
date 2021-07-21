@@ -4,8 +4,6 @@ import dk.kattehale.Main;
 
 public class QuickSort {
 
-    public static int[] array = Main.getArray();
-
     private static int findPivot(int[] array, int low, int high) {
         int pivot = array[high];
         int i = low-1;
@@ -13,10 +11,10 @@ public class QuickSort {
         for (int j = low; j <= high-1; j++) {
             if(array[j] <= pivot) {
                 i++;
-                swap(i, j);
+                swap(array, i, j);
             }
         }
-        swap(i+1, high);
+        swap(array,i+1, high);
         return i+1;
     }
 
@@ -28,7 +26,7 @@ public class QuickSort {
         }
     }
 
-    private static void swap(int firstIndex, int secondIndex) {
+    private static void swap(int[] array, int firstIndex, int secondIndex) {
         int temp = array[firstIndex];
         array[firstIndex] = array[secondIndex];
         array[secondIndex] = temp;
@@ -37,6 +35,7 @@ public class QuickSort {
 
 
     public static void runSort(int[] array) {
+        System.out.println("QuickSort.runSort Called");
         quickSort(array,0,array.length-1);
     }
 

@@ -4,8 +4,6 @@ import dk.kattehale.Main;
 
 public class InsertionSort {
 
-    public static int[] array = Main.getArray();
-
     public static void runSort(int[] array) {
         for(int i = 0; i < array.length; i++) {
             int key = array[i];

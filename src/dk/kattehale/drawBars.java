@@ -27,6 +27,7 @@ public class drawBars extends JPanel {
         repaint();
     }
 
+    // TODO: Add colors to the bars to show which bar is being edited
     // This function paints the bars
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -58,4 +59,5 @@ public class drawBars extends JPanel {
     public void setWidth(int width) {
         this.width = width;
     }
+
 }
