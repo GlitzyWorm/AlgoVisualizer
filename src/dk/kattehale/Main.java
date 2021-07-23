@@ -18,17 +18,30 @@ public class Main {
     public static int width = 1200;
     public static int height = 700;
 
+
+    static Thread thread2;
+
     // The amount of data (and bars) to use (works best with a max of a 100 data points).
     public static int dataCount = 1000;
 
+    // The sorting speed
+    public static int speed = 10;
+
+    // The array that holds the values from 0-100
     public static int[] array;
 
     public static drawBars bars = new drawBars();
 
-    static JComboBox sortList;
+    // Array with names of sorting algorithms available
     public static String[] sortNames = {"BubbleSort", "InsertionSort", "SelectionSort", "QuickSort"};
+
+    // Array with fixed amount of dataCounts
+    public static Integer[] dataValues = {10, 50, 100, 200, 400, 600};
+
+    static JComboBox sortList;
+    static JComboBox dataList;
     static JButton startSort;
-    static JSlider dataSlider;
+    static JSlider speedSlider;
 
     // Name of cards for CardLayout
     final static String SELECTSORT = "selectionCard";
@@ -65,16 +78,25 @@ public class Main {
         JLabel sortLabel = new JLabel("Sorting algorithm");
         sortLabel.setFont(new Font("Dialog", Font.PLAIN, 18));
 
-        // TODO: Maybe change slider to JCombobox to give fixed values
-        // Slider to choose the amount of dataCounts
-        dataSlider = new JSlider(JSlider.HORIZONTAL, 0,600,100);
-        dataSlider.setMajorTickSpacing(200);
-        dataSlider.setMinorTickSpacing(20);
-        dataSlider.setPaintTicks(true);
-        dataSlider.setPaintLabels(true);
-        dataSlider.setSnapToTicks(true);
-        dataSlider.setPreferredSize(new Dimension(300,50));
-        dataSlider.setFocusable(false);
+        // Label for speedSlider
+        JLabel speedLabel = new JLabel("Sorting speed");
+        speedLabel.setFont(new Font("Dialog", Font.PLAIN, 18));
+
+        // Slider to choose the sorting speed
+        speedSlider = new JSlider(JSlider.HORIZONTAL, 0,40,10);
+        speedSlider.setMajorTickSpacing(5);
+        speedSlider.setMinorTickSpacing(1);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setPaintLabels(true);
+        speedSlider.setSnapToTicks(true);
+        speedSlider.setPreferredSize(new Dimension(300,50));
+        speedSlider.setFocusable(false);
+
+        // JComboBox to choose the amount of bars/dataCount
+        dataList = new JComboBox(dataValues);
+        dataList.setSelectedIndex(2);
+        dataList.setPreferredSize(new Dimension(150,25));
+        dataList.setFocusable(false);
 
         // Dropdown menu to choose the sorting algorithm
         sortList = new JComboBox(sortNames);
@@ -89,7 +111,7 @@ public class Main {
         startSort.setFocusPainted(false);
 
         // Placement of title icon
-        c.gridx = 0;
+        c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 4;
         c.gridheight = 1;
@@ -98,7 +120,7 @@ public class Main {
         c.insets = new Insets(0,0,100,0);
         cardSelect.add(iconLabel,c);
 
-        // Placement of sliderLabel
+        // Placement of dataList Label
         c.gridx = 1;
         c.gridy = 3;
         c.gridwidth = 1;
@@ -108,31 +130,51 @@ public class Main {
         c.fill = GridBagConstraints.NONE;
         cardSelect.add(sliderLabel, c);
 
-        // Placement of slider
+        // Placement of dataCount dropdown
         c.gridx = 1;
         c.gridy = 4;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.insets = new Insets(0,0,0,0);
+        c.insets = new Insets(10,0,0,0);
         c.anchor = GridBagConstraints.SOUTH;
         c.fill = GridBagConstraints.NONE;
-        cardSelect.add(dataSlider, c);
+        cardSelect.add(dataList, c);
 
-        // Placement of sortLabel
-        c.gridx = 3;
+        // Placement of speedLabel
+        c.gridx = 2;
         c.gridy = 3;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.insets = new Insets(0,10,0,0);
+        c.insets = new Insets(150,0,0,0);
         c.anchor = GridBagConstraints.SOUTH;
-        cardSelect.add(sortLabel, c);
+        c.fill = GridBagConstraints.NONE;
+        cardSelect.add(speedLabel, c);
 
-        // Placement of dropdown
-        c.gridx = 3;
+        // Placement of speedSlider
+        c.gridx = 2;
         c.gridy = 4;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.insets = new Insets(0,10,10,0);
+        c.insets = new Insets(10,50,0,50);
+        c.anchor = GridBagConstraints.SOUTH;
+        c.fill = GridBagConstraints.NONE;
+        cardSelect.add(speedSlider, c);
+
+        // Placement of sortLabel
+        c.gridx = 4;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.insets = new Insets(0,0,0,0);
+        c.anchor = GridBagConstraints.SOUTH;
+        cardSelect.add(sortLabel, c);
+
+        // Placement of sorting algorithm dropdown
+        c.gridx = 4;
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.insets = new Insets(10,0,0,0);
         c.anchor = GridBagConstraints.SOUTH;
         cardSelect.add(sortList, c);
 
@@ -168,7 +210,11 @@ public class Main {
         // Starts new thread to handle button click. Otherwise the GUI freezes
         // Goes to next card - do the sorting
         Thread thread = new Thread(() -> startSort.addActionListener(e -> {
-            dataCount = dataSlider.getValue();
+            if(thread2 != null) {
+                thread2.interrupt();
+            }
+            dataCount = (int) dataList.getSelectedItem();
+            speed = speedSlider.getValue();
             assignArray(dataCount);
             cardLayout.show(cardContainer, PERFORMSORT);
             doSort();
@@ -191,7 +237,10 @@ public class Main {
         array = new int[dc];
         System.out.println("assignArray called");
 
+        bars.setStatesLength(array.length);
+
         for (int i = 0; i < dc; i++) {
+            drawBars.setBarColor(i, -1);
             array[dc-1-i] = dc-i;
         }
 
@@ -203,17 +252,22 @@ public class Main {
 
     // Shuffles the array to place the values in a random order
     public static void shuffle() {
-        longSleep();
+        longSleep(1000);
         Random rng = new Random();
         for (int i = 0; i < array.length; i++) {
             int swapWithIndex = rng.nextInt(array.length - 1);
             int temp = array[i];
             array[i] = array[swapWithIndex];
             array[swapWithIndex] = temp;
-
-            Main.updateArray();
+            drawBars.setBarColor(i, 1);
+            if (i != 0) {
+                drawBars.setBarColor(i-1, -1);
+            }
+            Main.updateArray(10);
         }
-        longSleep();
+        drawBars.setBarColor(array.length-1, -1);
+        Main.updateArray(0);
+        longSleep(1000);
 
     }
 
@@ -221,7 +275,7 @@ public class Main {
     public static void doSort() {
 
         // Starts a second thread to avoid freezing the GUI
-        Thread thread2 = new Thread(() -> {
+        thread2 = new Thread(() -> {
             System.out.println("doSort is running");
             switch (Objects.requireNonNull(sortList.getSelectedItem()).toString()) {
                 case "BubbleSort" -> {
@@ -254,18 +308,14 @@ public class Main {
     }
 
     // Updates the visualization of the array
-    public static void updateArray() {
+    public static void updateArray(int delay) {
         bars.repaint();
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
+        longSleep(delay);
     }
 
-    private static void longSleep() {
+    private static void longSleep(int duration) {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(duration);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
