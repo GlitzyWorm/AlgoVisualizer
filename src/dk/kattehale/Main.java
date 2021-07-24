@@ -1,9 +1,6 @@
 package dk.kattehale;
 
-import dk.kattehale.algorithms.BubbleSort;
-import dk.kattehale.algorithms.InsertionSort;
-import dk.kattehale.algorithms.QuickSort;
-import dk.kattehale.algorithms.SelectionSort;
+import dk.kattehale.algorithms.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +30,7 @@ public class Main {
     public static drawBars bars = new drawBars();
 
     // Array with names of sorting algorithms available
-    public static String[] sortNames = {"BubbleSort", "InsertionSort", "SelectionSort", "QuickSort"};
+    public static String[] sortNames = {"BubbleSort", "InsertionSort", "SelectionSort", "QuickSort", "MergeSort", "HeapSort"};
 
     // Array with fixed amount of dataCounts
     public static Integer[] dataValues = {10, 50, 100, 200, 400, 600};
@@ -297,6 +294,16 @@ public class Main {
                     System.out.println("QuickSort running");
                     shuffle();
                     QuickSort.runSort(array);
+                }
+                case "MergeSort" -> {
+                    System.out.println("MergeSort running");
+                    shuffle();
+                    MergeSort.runSort(array);
+                }
+                case "HeapSort" -> {
+                    System.out.println("HeapSort running");
+                    shuffle();
+                    HeapSort.runSort(array);
                 }
                 default -> {
                     shuffle();
