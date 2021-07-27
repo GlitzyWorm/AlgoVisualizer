@@ -23,6 +23,7 @@ public class SelectionSort {
             }
             swap(array, i, jMin);
         }
+        Main.setGoBackVisible(true);
 
     }
 

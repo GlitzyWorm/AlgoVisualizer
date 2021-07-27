@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="AlgoVisualizer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AlgoVisualizer_jar</output-path>
+    <root id="archive" name="AlgoVisualizer.jar">
+      <element id="module-output" name="AlgoVisualizer" />
+      <element id="file-copy" path="$PROJECT_DIR$/resources/logo.png" />
+      <element id="dir-copy" path="$PROJECT_DIR$" />
+    </root>
+  </artifact>
+</component>

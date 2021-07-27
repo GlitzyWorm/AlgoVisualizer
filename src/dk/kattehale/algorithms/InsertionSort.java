@@ -28,5 +28,6 @@ public class InsertionSort {
             array[j+1] = key;
         }
         Main.updateArray(10);
+        Main.setGoBackVisible(true);
     }
 }

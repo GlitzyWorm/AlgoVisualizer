@@ -44,6 +44,8 @@ public class QuickSort {
             drawBars.setBarColor(pivot, -1);
             quickSort(array, low, pivot-1);
             quickSort(array, pivot+1,high);
+        } else {
+            Main.setGoBackVisible(true);
         }
     }
 

@@ -24,6 +24,7 @@ public class BubbleSort {
 
             drawBars.setBarColor(i,-1);
         }
+        Main.setGoBackVisible(true);
     }
 
     private static void swap(int[] array, int firstIndex, int secondIndex) {

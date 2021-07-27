@@ -30,7 +30,7 @@ public class Main {
     public static drawBars bars = new drawBars();
 
     // Array with names of sorting algorithms available
-    public static String[] sortNames = {"BubbleSort", "InsertionSort", "SelectionSort", "QuickSort", "MergeSort", "HeapSort"};
+    public static String[] sortNames = {"BubbleSort", "InsertionSort", "SelectionSort", "QuickSort", "MergeSort", "HeapSort", "RadixSort"};
 
     // Array with fixed amount of dataCounts
     public static Integer[] dataValues = {10, 50, 100, 200, 400, 600};
@@ -39,6 +39,7 @@ public class Main {
     static JComboBox dataList;
     static JButton startSort;
     static JSlider speedSlider;
+    static JButton goBack;
 
     // Name of cards for CardLayout
     final static String SELECTSORT = "selectionCard";
@@ -65,7 +66,10 @@ public class Main {
 
         // Title Icon
         JLabel iconLabel = new JLabel();
-        iconLabel.setIcon(new ImageIcon("src/dk/kattehale/resources/logo.png"));
+        iconLabel.setIcon(new ImageIcon(Objects.requireNonNull(Main.class.getResource("/logo.png"))));
+
+        // Doesn't work when building artifact
+//        iconLabel.setIcon(new ImageIcon("resources/logo.png"));
 
         // Label for slider
         JLabel sliderLabel = new JLabel("Number of bars");
@@ -189,9 +193,10 @@ public class Main {
         JPanel cardPerform = new JPanel(new BorderLayout());
 
         // Add return button to previous card
-        JButton goBack = new JButton("Return");
+        goBack = new JButton("Return");
         goBack.setFont(new Font("Dialog", Font.PLAIN, 18));
         goBack.setFocusPainted(false);
+        goBack.setVisible(true);
 
 
 
@@ -223,6 +228,8 @@ public class Main {
 
         // Adds cardContainer and sets up the JFrame
         frame.add(cardContainer, BorderLayout.CENTER);
+        ImageIcon img = new ImageIcon(Objects.requireNonNull(Main.class.getResource("/frameIcon.png")));
+        frame.setIconImage(img.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -276,36 +283,50 @@ public class Main {
             System.out.println("doSort is running");
             switch (Objects.requireNonNull(sortList.getSelectedItem()).toString()) {
                 case "BubbleSort" -> {
+                    goBack.setVisible(false);
                     System.out.println("BubbleSort running");
                     shuffle();
                     BubbleSort.runSort(array);
                 }
                 case "InsertionSort" -> {
+                    goBack.setVisible(false);
                     System.out.println("InsertionSort running");
                     shuffle();
                     InsertionSort.runSort(array);
                 }
                 case "SelectionSort" -> {
+                    goBack.setVisible(false);
                     System.out.println("SelectionSort running");
                     shuffle();
                     SelectionSort.runSort(array);
                 }
                 case "QuickSort" -> {
+                    goBack.setVisible(false);
                     System.out.println("QuickSort running");
                     shuffle();
                     QuickSort.runSort(array);
                 }
                 case "MergeSort" -> {
+                    goBack.setVisible(false);
                     System.out.println("MergeSort running");
                     shuffle();
                     MergeSort.runSort(array);
                 }
                 case "HeapSort" -> {
+                    goBack.setVisible(false);
                     System.out.println("HeapSort running");
                     shuffle();
                     HeapSort.runSort(array);
                 }
+                case "RadixSort" -> {
+                    goBack.setVisible(false);
+                    System.out.println("RadixSort running");
+                    shuffle();
+                    RadixSort.runSort(array);
+                }
                 default -> {
+                    goBack.setVisible(false);
+                    System.out.println("Default running");
                     shuffle();
                     QuickSort.runSort(array);
                 }
@@ -357,6 +378,11 @@ public class Main {
 
     public static int getDataCount() {
         return dataCount;
+    }
+
+    /* Setter for goBack */
+    public static void setGoBackVisible(boolean val) {
+        goBack.setVisible(val);
     }
 }
 

@@ -67,7 +67,10 @@ public class MergeSort {
            mergeSort(array, left, middle);
            mergeSort(array, middle+1,right);
            merge(array, left, middle , right);
+       } else {
+           Main.setGoBackVisible(true);
        }
+
     }
 
     public static void runSort(int[] array) {

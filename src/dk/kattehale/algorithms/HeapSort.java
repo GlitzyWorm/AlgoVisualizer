@@ -35,6 +35,7 @@ public class HeapSort {
             swap(array,0,i);
             toBinaryTreeArray(array, i,0);
         }
+        Main.setGoBackVisible(true);
     }
 
     private static void swap(int[] array, int firstIndex, int secondIndex) {
